@@ -15,3 +15,4 @@ Software that helps an Othello player using digital image processing
 ## Objectifs secondaires
 
 - GUI Sexy
+- Mobile App
