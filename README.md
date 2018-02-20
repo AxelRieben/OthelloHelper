@@ -10,7 +10,7 @@ Software that helps an Othello player using digital image processing
 3. Analayse de l'image 
 4. Calculs des coups possibles (et définir le meilleur coup avec IA)
 5. Affichage sur la photo les coups jouable
-6. Affichage en surbrillance du meilleur coup.
+6. Affichage en surbrillance du meilleur coup
 
 ## Objectifs secondaires
 
