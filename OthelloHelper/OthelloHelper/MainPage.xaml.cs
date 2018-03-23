@@ -12,6 +12,13 @@ namespace OthelloHelper
 		public MainPage()
 		{
 			InitializeComponent();
-		}
-	}
+
+
+            //Mat src = new Mat("Images/lena.jpg", ImreadModes.GrayScale);
+            //// Mat src = Cv2.ImRead("lenna.png", ImreadModes.GrayScale);
+            //Mat dst = new Mat();
+
+            //Cv2.Canny(src, dst, 50, 200);
+        }
+    }
 }
