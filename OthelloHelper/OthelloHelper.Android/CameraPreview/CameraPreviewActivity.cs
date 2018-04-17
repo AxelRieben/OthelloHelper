@@ -14,6 +14,7 @@ using Android.Widget;
 using OpenCV.Android;
 using OpenCV.Core;
 using OpenCV.ImgProc;
+using OthelloIA_G3;
 
 namespace OthelloHelper.Droid.CameraPreview
 {

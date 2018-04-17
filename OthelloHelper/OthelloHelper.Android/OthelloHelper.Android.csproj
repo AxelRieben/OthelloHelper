@@ -59,6 +59,7 @@
     <PackageReference Include="Xamarin.Android.Support.v7.MediaRouter" Version="25.4.0.2" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BitmapHelpers.cs" />
     <Compile Include="CameraPreview\CameraPreviewActivity.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
@@ -71,6 +72,9 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\Main.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\MainOpenCV.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
@@ -95,6 +99,13 @@
       <Project>{7ADFA1FD-314B-4DD2-BBB1-234C3E0AEE53}</Project>
       <Name>OthelloHelper</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OthelloIA_G3\OthelloIA_G3.csproj">
+      <Project>{90c344fa-02b9-4077-9f02-0cb7f6748d54}</Project>
+      <Name>OthelloIA_G3</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\lena.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

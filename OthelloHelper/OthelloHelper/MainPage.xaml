@@ -4,8 +4,9 @@
              xmlns:local="clr-namespace:OthelloHelper"
              x:Class="OthelloHelper.MainPage">
 
-	<Label Text="Welcome to Xamarin.Forms!" 
-           VerticalOptions="Center" 
-           HorizontalOptions="Center" />
+    <StackLayout>
+        <Button x:Name="btnTakePicture" Text="Take picture" Clicked="OnTakePicturePressed" />
+        <Image x:Name="imageView" Source="lena.jpg" />
+    </StackLayout>
 
 </ContentPage>
