@@ -2790,8 +2790,8 @@ namespace OthelloHelper.Droid
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f0800a5
-			public const int action0 = 2131230885;
+			// aapt resource value: 0x7f0800a7
+			public const int action0 = 2131230887;
 			
 			// aapt resource value: 0x7f080067
 			public const int action_bar = 2131230823;
@@ -2814,17 +2814,17 @@ namespace OthelloHelper.Droid
 			// aapt resource value: 0x7f080044
 			public const int action_bar_title = 2131230788;
 			
-			// aapt resource value: 0x7f0800a2
-			public const int action_container = 2131230882;
+			// aapt resource value: 0x7f0800a4
+			public const int action_container = 2131230884;
 			
 			// aapt resource value: 0x7f080068
 			public const int action_context_bar = 2131230824;
 			
-			// aapt resource value: 0x7f0800a9
-			public const int action_divider = 2131230889;
+			// aapt resource value: 0x7f0800ab
+			public const int action_divider = 2131230891;
 			
-			// aapt resource value: 0x7f0800a3
-			public const int action_image = 2131230883;
+			// aapt resource value: 0x7f0800a5
+			public const int action_image = 2131230885;
 			
 			// aapt resource value: 0x7f080003
 			public const int action_menu_divider = 2131230723;
@@ -2841,11 +2841,11 @@ namespace OthelloHelper.Droid
 			// aapt resource value: 0x7f080046
 			public const int action_mode_close_button = 2131230790;
 			
-			// aapt resource value: 0x7f0800a4
-			public const int action_text = 2131230884;
+			// aapt resource value: 0x7f0800a6
+			public const int action_text = 2131230886;
 			
-			// aapt resource value: 0x7f0800b2
-			public const int actions = 2131230898;
+			// aapt resource value: 0x7f0800b4
+			public const int actions = 2131230900;
 			
 			// aapt resource value: 0x7f080047
 			public const int activity_chooser_view_content = 2131230791;
@@ -2880,11 +2880,11 @@ namespace OthelloHelper.Droid
 			// aapt resource value: 0x7f08004e
 			public const int buttonPanel = 2131230798;
 			
-			// aapt resource value: 0x7f080087
-			public const int cameraPreview = 2131230855;
+			// aapt resource value: 0x7f080089
+			public const int cameraPreview = 2131230857;
 			
-			// aapt resource value: 0x7f0800a6
-			public const int cancel_action = 2131230886;
+			// aapt resource value: 0x7f0800a8
+			public const int cancel_action = 2131230888;
 			
 			// aapt resource value: 0x7f080030
 			public const int center = 2131230768;
@@ -2898,8 +2898,8 @@ namespace OthelloHelper.Droid
 			// aapt resource value: 0x7f08005e
 			public const int checkbox = 2131230814;
 			
-			// aapt resource value: 0x7f0800ae
-			public const int chronometer = 2131230894;
+			// aapt resource value: 0x7f0800b0
+			public const int chronometer = 2131230896;
 			
 			// aapt resource value: 0x7f080039
 			public const int clip_horizontal = 2131230777;
@@ -2955,8 +2955,8 @@ namespace OthelloHelper.Droid
 			// aapt resource value: 0x7f080021
 			public const int end = 2131230753;
 			
-			// aapt resource value: 0x7f0800b8
-			public const int end_padder = 2131230904;
+			// aapt resource value: 0x7f0800ba
+			public const int end_padder = 2131230906;
 			
 			// aapt resource value: 0x7f08002a
 			public const int enterAlways = 2131230762;
@@ -2997,8 +2997,8 @@ namespace OthelloHelper.Droid
 			// aapt resource value: 0x7f08004c
 			public const int icon = 2131230796;
 			
-			// aapt resource value: 0x7f0800b3
-			public const int icon_group = 2131230899;
+			// aapt resource value: 0x7f0800b5
+			public const int icon_group = 2131230901;
 			
 			// aapt resource value: 0x7f080025
 			public const int ifRoom = 2131230757;
@@ -3006,11 +3006,11 @@ namespace OthelloHelper.Droid
 			// aapt resource value: 0x7f080049
 			public const int image = 2131230793;
 			
-			// aapt resource value: 0x7f080086
-			public const int imageView = 2131230854;
+			// aapt resource value: 0x7f080088
+			public const int imageView = 2131230856;
 			
-			// aapt resource value: 0x7f0800af
-			public const int info = 2131230895;
+			// aapt resource value: 0x7f0800b1
+			public const int info = 2131230897;
 			
 			// aapt resource value: 0x7f080000
 			public const int item_touch_helper_previous_elevation = 2131230720;
@@ -3021,11 +3021,11 @@ namespace OthelloHelper.Droid
 			// aapt resource value: 0x7f080034
 			public const int left = 2131230772;
 			
-			// aapt resource value: 0x7f0800b4
-			public const int line1 = 2131230900;
-			
 			// aapt resource value: 0x7f0800b6
-			public const int line3 = 2131230902;
+			public const int line1 = 2131230902;
+			
+			// aapt resource value: 0x7f0800b8
+			public const int line3 = 2131230904;
 			
 			// aapt resource value: 0x7f08000f
 			public const int listMode = 2131230735;
@@ -3033,11 +3033,11 @@ namespace OthelloHelper.Droid
 			// aapt resource value: 0x7f08004b
 			public const int list_item = 2131230795;
 			
-			// aapt resource value: 0x7f0800bc
-			public const int masked = 2131230908;
+			// aapt resource value: 0x7f0800bd
+			public const int masked = 2131230909;
 			
-			// aapt resource value: 0x7f0800a8
-			public const int media_actions = 2131230888;
+			// aapt resource value: 0x7f0800aa
+			public const int media_actions = 2131230890;
 			
 			// aapt resource value: 0x7f080022
 			public const int middle = 2131230754;
@@ -3045,80 +3045,80 @@ namespace OthelloHelper.Droid
 			// aapt resource value: 0x7f08003e
 			public const int mini = 2131230782;
 			
-			// aapt resource value: 0x7f080094
-			public const int mr_art = 2131230868;
-			
-			// aapt resource value: 0x7f080089
-			public const int mr_chooser_list = 2131230857;
-			
-			// aapt resource value: 0x7f08008c
-			public const int mr_chooser_route_desc = 2131230860;
-			
-			// aapt resource value: 0x7f08008a
-			public const int mr_chooser_route_icon = 2131230858;
+			// aapt resource value: 0x7f080096
+			public const int mr_art = 2131230870;
 			
 			// aapt resource value: 0x7f08008b
-			public const int mr_chooser_route_name = 2131230859;
-			
-			// aapt resource value: 0x7f080088
-			public const int mr_chooser_title = 2131230856;
-			
-			// aapt resource value: 0x7f080091
-			public const int mr_close = 2131230865;
-			
-			// aapt resource value: 0x7f080097
-			public const int mr_control_divider = 2131230871;
-			
-			// aapt resource value: 0x7f08009d
-			public const int mr_control_playback_ctrl = 2131230877;
-			
-			// aapt resource value: 0x7f0800a0
-			public const int mr_control_subtitle = 2131230880;
-			
-			// aapt resource value: 0x7f08009f
-			public const int mr_control_title = 2131230879;
-			
-			// aapt resource value: 0x7f08009e
-			public const int mr_control_title_container = 2131230878;
-			
-			// aapt resource value: 0x7f080092
-			public const int mr_custom_control = 2131230866;
-			
-			// aapt resource value: 0x7f080093
-			public const int mr_default_control = 2131230867;
+			public const int mr_chooser_list = 2131230859;
 			
 			// aapt resource value: 0x7f08008e
-			public const int mr_dialog_area = 2131230862;
+			public const int mr_chooser_route_desc = 2131230862;
+			
+			// aapt resource value: 0x7f08008c
+			public const int mr_chooser_route_icon = 2131230860;
 			
 			// aapt resource value: 0x7f08008d
-			public const int mr_expandable_area = 2131230861;
+			public const int mr_chooser_route_name = 2131230861;
 			
-			// aapt resource value: 0x7f0800a1
-			public const int mr_group_expand_collapse = 2131230881;
+			// aapt resource value: 0x7f08008a
+			public const int mr_chooser_title = 2131230858;
 			
-			// aapt resource value: 0x7f080095
-			public const int mr_media_main_control = 2131230869;
-			
-			// aapt resource value: 0x7f080090
-			public const int mr_name = 2131230864;
-			
-			// aapt resource value: 0x7f080096
-			public const int mr_playback_control = 2131230870;
-			
-			// aapt resource value: 0x7f08008f
-			public const int mr_title_bar = 2131230863;
-			
-			// aapt resource value: 0x7f080098
-			public const int mr_volume_control = 2131230872;
+			// aapt resource value: 0x7f080093
+			public const int mr_close = 2131230867;
 			
 			// aapt resource value: 0x7f080099
-			public const int mr_volume_group_list = 2131230873;
+			public const int mr_control_divider = 2131230873;
+			
+			// aapt resource value: 0x7f08009f
+			public const int mr_control_playback_ctrl = 2131230879;
+			
+			// aapt resource value: 0x7f0800a2
+			public const int mr_control_subtitle = 2131230882;
+			
+			// aapt resource value: 0x7f0800a1
+			public const int mr_control_title = 2131230881;
+			
+			// aapt resource value: 0x7f0800a0
+			public const int mr_control_title_container = 2131230880;
+			
+			// aapt resource value: 0x7f080094
+			public const int mr_custom_control = 2131230868;
+			
+			// aapt resource value: 0x7f080095
+			public const int mr_default_control = 2131230869;
+			
+			// aapt resource value: 0x7f080090
+			public const int mr_dialog_area = 2131230864;
+			
+			// aapt resource value: 0x7f08008f
+			public const int mr_expandable_area = 2131230863;
+			
+			// aapt resource value: 0x7f0800a3
+			public const int mr_group_expand_collapse = 2131230883;
+			
+			// aapt resource value: 0x7f080097
+			public const int mr_media_main_control = 2131230871;
+			
+			// aapt resource value: 0x7f080092
+			public const int mr_name = 2131230866;
+			
+			// aapt resource value: 0x7f080098
+			public const int mr_playback_control = 2131230872;
+			
+			// aapt resource value: 0x7f080091
+			public const int mr_title_bar = 2131230865;
+			
+			// aapt resource value: 0x7f08009a
+			public const int mr_volume_control = 2131230874;
 			
 			// aapt resource value: 0x7f08009b
-			public const int mr_volume_item_icon = 2131230875;
+			public const int mr_volume_group_list = 2131230875;
 			
-			// aapt resource value: 0x7f08009c
-			public const int mr_volume_slider = 2131230876;
+			// aapt resource value: 0x7f08009d
+			public const int mr_volume_item_icon = 2131230877;
+			
+			// aapt resource value: 0x7f08009e
+			public const int mr_volume_slider = 2131230878;
 			
 			// aapt resource value: 0x7f080019
 			public const int multiply = 2131230745;
@@ -3135,23 +3135,26 @@ namespace OthelloHelper.Droid
 			// aapt resource value: 0x7f080010
 			public const int normal = 2131230736;
 			
-			// aapt resource value: 0x7f0800b1
-			public const int notification_background = 2131230897;
+			// aapt resource value: 0x7f0800b3
+			public const int notification_background = 2131230899;
 			
-			// aapt resource value: 0x7f0800ab
-			public const int notification_main_column = 2131230891;
+			// aapt resource value: 0x7f0800ad
+			public const int notification_main_column = 2131230893;
 			
-			// aapt resource value: 0x7f0800aa
-			public const int notification_main_column_container = 2131230890;
+			// aapt resource value: 0x7f0800ac
+			public const int notification_main_column_container = 2131230892;
 			
-			// aapt resource value: 0x7f080085
-			public const int openCamera = 2131230853;
+			// aapt resource value: 0x7f080086
+			public const int openCamera = 2131230854;
 			
 			// aapt resource value: 0x7f080037
 			public const int parallax = 2131230775;
 			
 			// aapt resource value: 0x7f080050
 			public const int parentPanel = 2131230800;
+			
+			// aapt resource value: 0x7f080087
+			public const int pickGallery = 2131230855;
 			
 			// aapt resource value: 0x7f080038
 			public const int pin = 2131230776;
@@ -3168,11 +3171,11 @@ namespace OthelloHelper.Droid
 			// aapt resource value: 0x7f080035
 			public const int right = 2131230773;
 			
-			// aapt resource value: 0x7f0800b0
-			public const int right_icon = 2131230896;
+			// aapt resource value: 0x7f0800b2
+			public const int right_icon = 2131230898;
 			
-			// aapt resource value: 0x7f0800ac
-			public const int right_side = 2131230892;
+			// aapt resource value: 0x7f0800ae
+			public const int right_side = 2131230894;
 			
 			// aapt resource value: 0x7f08001a
 			public const int screen = 2131230746;
@@ -3237,8 +3240,8 @@ namespace OthelloHelper.Droid
 			// aapt resource value: 0x7f080017
 			public const int showTitle = 2131230743;
 			
-			// aapt resource value: 0x7f0800b9
-			public const int sliding_tabs = 2131230905;
+			// aapt resource value: 0x7f0800bb
+			public const int sliding_tabs = 2131230907;
 			
 			// aapt resource value: 0x7f080077
 			public const int smallLabel = 2131230839;
@@ -3270,8 +3273,8 @@ namespace OthelloHelper.Droid
 			// aapt resource value: 0x7f080036
 			public const int start = 2131230774;
 			
-			// aapt resource value: 0x7f0800a7
-			public const int status_bar_latest_event_content = 2131230887;
+			// aapt resource value: 0x7f0800a9
+			public const int status_bar_latest_event_content = 2131230889;
 			
 			// aapt resource value: 0x7f080061
 			public const int submenuarrow = 2131230817;
@@ -3285,11 +3288,11 @@ namespace OthelloHelper.Droid
 			// aapt resource value: 0x7f080011
 			public const int tabMode = 2131230737;
 			
-			// aapt resource value: 0x7f0800b7
-			public const int text = 2131230903;
+			// aapt resource value: 0x7f0800b9
+			public const int text = 2131230905;
 			
-			// aapt resource value: 0x7f0800b5
-			public const int text2 = 2131230901;
+			// aapt resource value: 0x7f0800b7
+			public const int text2 = 2131230903;
 			
 			// aapt resource value: 0x7f080055
 			public const int textSpacerNoButtons = 2131230805;
@@ -3306,8 +3309,8 @@ namespace OthelloHelper.Droid
 			// aapt resource value: 0x7f08000d
 			public const int textinput_error = 2131230733;
 			
-			// aapt resource value: 0x7f0800ad
-			public const int time = 2131230893;
+			// aapt resource value: 0x7f0800af
+			public const int time = 2131230895;
 			
 			// aapt resource value: 0x7f08004d
 			public const int title = 2131230797;
@@ -3318,8 +3321,8 @@ namespace OthelloHelper.Droid
 			// aapt resource value: 0x7f08005a
 			public const int title_template = 2131230810;
 			
-			// aapt resource value: 0x7f0800ba
-			public const int toolbar = 2131230906;
+			// aapt resource value: 0x7f080085
+			public const int toolbar = 2131230853;
 			
 			// aapt resource value: 0x7f080029
 			public const int top = 2131230761;
@@ -3345,11 +3348,11 @@ namespace OthelloHelper.Droid
 			// aapt resource value: 0x7f08000e
 			public const int view_offset_helper = 2131230734;
 			
-			// aapt resource value: 0x7f0800bb
-			public const int visible = 2131230907;
+			// aapt resource value: 0x7f0800bc
+			public const int visible = 2131230908;
 			
-			// aapt resource value: 0x7f08009a
-			public const int volume_item_container = 2131230874;
+			// aapt resource value: 0x7f08009c
+			public const int volume_item_container = 2131230876;
 			
 			// aapt resource value: 0x7f080027
 			public const int withText = 2131230759;
@@ -4360,6 +4363,12 @@ namespace OthelloHelper.Droid
 			
 			// aapt resource value: 0x7f0b018a
 			public const int MainTheme_Base = 2131427722;
+			
+			// aapt resource value: 0x7f0b018c
+			public const int OthelloTheme = 2131427724;
+			
+			// aapt resource value: 0x7f0b018d
+			public const int OthelloTheme2 = 2131427725;
 			
 			// aapt resource value: 0x7f0b002d
 			public const int Platform_AppCompat = 2131427373;
