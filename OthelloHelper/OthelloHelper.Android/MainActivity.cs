@@ -13,7 +13,7 @@ using Android.Util;
 namespace OthelloHelper.Droid
 {
     [Activity(Label = "OthelloHelper", Icon = "@drawable/icon", Theme = "@style/OthelloTheme", MainLauncher = true)]
-    public class MainActivity : Activity //: global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity // Activity
+    public class MainActivity : Activity
     {
         private ImageView imageView;
         private Button btnOpenCamera;
