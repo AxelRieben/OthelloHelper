@@ -9,12 +9,16 @@ using System.Collections.Generic;
 using Android.Provider;
 using Android.Util;
 
+// Source :  https://github.com/xamarin/recipes/tree/master/Recipes/android/other_ux/camera_intent/take_a_picture_and_save_using_camera_app
 namespace OthelloHelper.Droid
 {
     [Activity(Label = "OthelloHelper", Icon = "@drawable/icon", Theme = "@style/OthelloTheme", MainLauncher = true)]
     public class MainActivity : Activity //: global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity // Activity
     {
         private ImageView imageView;
+        private Button btnOpenCamera;
+        private Button btnPickFromGallery;
+        private Button btnProcess;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -22,31 +26,37 @@ namespace OthelloHelper.Droid
 
             SetContentView(Resource.Layout.Main);
 
+            // Toolbar
             var toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
             SetActionBar(toolbar);
             ActionBar.Title = "OthelloHelper";
 
+            // Buttons
+            btnOpenCamera = FindViewById<Button>(Resource.Id.openCamera);
+            btnPickFromGallery = FindViewById<Button>(Resource.Id.pickGallery);
+            btnProcess = FindViewById<Button>(Resource.Id.process);
+            btnProcess.Enabled = true;
+
+            // Image view
+            imageView = FindViewById<ImageView>(Resource.Id.imageView);
+
+            // Button listner
+            btnPickFromGallery.Click += PickFromGallery;
+            btnProcess.Click += BtnProcessClicked;
             if (IsThereAnAppToTakePictures())
             {
                 CreateDirectoryForPictures();
-
-                Button btnOpenCamera = FindViewById<Button>(Resource.Id.openCamera);
-                Button btnPickFromGallery = FindViewById<Button>(Resource.Id.pickGallery);
-                imageView = FindViewById<ImageView>(Resource.Id.imageView);
                 btnOpenCamera.Click += TakeApicture;
-                btnPickFromGallery.Click += PickFromGallery;
             }
 
-            //if (AppFile.bitmap != null)
-            //{
-            //    imageView.SetImageBitmap(AppFile.bitmap);
-            //}
+            // Image view content
             if (ImageProperties.uri != null)
             {
                 Log.Info("OnCreate", $"Restore image from uri {ImageProperties.uri.Path}");
                 try
                 {
                     imageView.SetImageURI(ImageProperties.uri);
+                    btnProcess.Enabled = true;
                 }
                 catch (Exception e)
                 {
@@ -74,7 +84,6 @@ namespace OthelloHelper.Droid
                 ImageProperties.uri = uri;
                 imageView.SetImageURI(uri);
             }
-
             GC.Collect();
         }
 
@@ -92,6 +101,11 @@ namespace OthelloHelper.Droid
             imageIntent.SetAction(Intent.ActionGetContent);
             StartActivityForResult(
                 Intent.CreateChooser(imageIntent, "Select photo"), 0);
+        }
+
+        private void BtnProcessClicked(object sender, EventArgs e)
+        {
+            Toast.MakeText(this, "Process started", ToastLength.Short).Show();
         }
 
         private bool IsThereAnAppToTakePictures()
