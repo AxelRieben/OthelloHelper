@@ -35,7 +35,7 @@ namespace OthelloHelper.Droid
             btnOpenCamera = FindViewById<Button>(Resource.Id.openCamera);
             btnPickFromGallery = FindViewById<Button>(Resource.Id.pickGallery);
             btnProcess = FindViewById<Button>(Resource.Id.process);
-            btnProcess.Enabled = true;
+            btnProcess.Enabled = false;
 
             // Image view
             imageView = FindViewById<ImageView>(Resource.Id.imageView);
