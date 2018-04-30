@@ -49,7 +49,7 @@ namespace OthelloHelper.Droid
             try
             {
                 bitmap = MediaStore.Images.Media.GetBitmap(ContentResolver, Android.Net.Uri.Parse(image_path));
-                Log.Info(TAG, $"Bitmap :  {bitmap}");
+                Log.Info(TAG, $"Bitmap :  {bitmap}\nByteCount : {bitmap.ByteCount}");
                 imageView.SetImageBitmap(bitmap);
             }
             catch (System.Exception)

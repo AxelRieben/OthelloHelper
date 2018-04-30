@@ -57,26 +57,11 @@ namespace OthelloHelper.Droid
             initialHsv = new Mat();
             displayMat = new Mat();
             csv = new StringBuilder();
-            board = new int[BOARD_SIZE, BOARD_SIZE];
+            Board = new int[BOARD_SIZE, BOARD_SIZE];
         }
 
-
-        public Bitmap ProcessedImage
-        {
-            get
-            {
-                return this.processedImage;
-            }
-        }
-
-
-        public int[,] Board
-        {
-            get
-            {
-                return this.board;
-            }
-        }
+        public Bitmap ProcessedImage { get => processedImage; set => processedImage = value; }
+        public int[,] Board { get => board; set => board = value; }
 
 
         /// <summary>
@@ -97,7 +82,7 @@ namespace OthelloHelper.Droid
         public void Process(Bitmap bitmap)
         {
             //bitmap = BitmapFactory.DecodeResource(Android.App.Application.Context.Resources, Resource.Drawable.test_medium_small);
-            
+
             Utils.BitmapToMat(bitmap, initialMat);
 
             if (initialMat.Empty())
@@ -266,20 +251,20 @@ namespace OthelloHelper.Droid
                 if (meanBoxValue > BOX_VALUE_THESHOLD)
                 {
                     //It's a white coin
-                    board[j, i] = 0;
+                    Board[j, i] = 0;
                     Imgproc.Rectangle(initialMat, currentBox.Tl(), currentBox.Br(), new Scalar(255, 255, 255, 255), 2, 8, 0);
                 }
                 else
                 {
                     //It's a black coin
-                    board[j, i] = 1;
+                    Board[j, i] = 1;
                     Imgproc.Rectangle(initialMat, currentBox.Tl(), currentBox.Br(), new Scalar(0, 0, 0, 255), 2, 8, 0);
                 }
             }
             else
             {
                 //It's a green box (no coin)
-                board[i, j] = -1;
+                Board[i, j] = -1;
                 Imgproc.Rectangle(initialMat, currentBox.Tl(), currentBox.Br(), new Scalar(0, 255, 0, 255), 2, 8, 0);
             }
         }
@@ -306,13 +291,13 @@ namespace OthelloHelper.Droid
         /// <param name="filename"></param>
         private void ExportBitmap(Mat mat, string filename)
         {
-            processedImage = Bitmap.CreateBitmap(mat.Cols(), mat.Rows(), Bitmap.Config.Argb8888);
-            Utils.MatToBitmap(mat, processedImage);
+            ProcessedImage = Bitmap.CreateBitmap(mat.Cols(), mat.Rows(), Bitmap.Config.Argb8888);
+            Utils.MatToBitmap(mat, ProcessedImage);
             string directoryPath = Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + DIR_PROCESSING;
             string filePath = System.IO.Path.Combine(directoryPath, filename);
             Directory.CreateDirectory(directoryPath);
             FileStream fileStream = new FileStream(filePath, FileMode.Create);
-            processedImage.Compress(Bitmap.CompressFormat.Png, 100, fileStream);
+            ProcessedImage.Compress(Bitmap.CompressFormat.Png, 100, fileStream);
             fileStream.Close();
         }
 
@@ -327,7 +312,7 @@ namespace OthelloHelper.Droid
             {
                 for (int j = 0; j < BOARD_SIZE; j++)
                 {
-                    text.Append(board[i, j]);
+                    text.Append(Board[i, j]);
                     text.Append("\t");
                 }
                 text.Append("\n");
