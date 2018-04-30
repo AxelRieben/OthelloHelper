@@ -41,11 +41,11 @@
     <item name="colorAccent">#FF4081</item>
   </style>
 
-  <style name="OthelloTheme" parent="@android:style/Theme.Material.Light.DarkActionBar">
-    <item name="android:windowNoTitle">true</item>
-    <item name="android:windowActionBar">false</item>
-    <item name="android:colorPrimary">#2E7D32</item>
-    <item name="android:colorPrimaryDark">#2E7D32</item>
+  <style name="OthelloTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <item name="windowNoTitle">true</item>
+    <item name="windowActionBar">false</item>
+    <item name="colorPrimary">#2E7D32</item>
+    <item name="colorAccent">#1B5E20</item>
   </style>
 
   

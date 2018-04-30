@@ -8,12 +8,14 @@ using Android.Content;
 using System.Collections.Generic;
 using Android.Provider;
 using Android.Util;
+using Android.Support.V7.App;
+using Toolbar = Android.Support.V7.Widget.Toolbar;
 
 // Source :  https://github.com/xamarin/recipes/tree/master/Recipes/android/other_ux/camera_intent/take_a_picture_and_save_using_camera_app
 namespace OthelloHelper.Droid
 {
     [Activity(Label = "OthelloHelper", Icon = "@drawable/icon", Theme = "@style/OthelloTheme", MainLauncher = true)]
-    public class MainActivity : Activity
+    public class MainActivity : AppCompatActivity
     {
         private ImageView imageView;
         private Button btnOpenCamera;
@@ -28,8 +30,8 @@ namespace OthelloHelper.Droid
 
             // Toolbar
             var toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
-            SetActionBar(toolbar);
-            ActionBar.Title = "OthelloHelper";
+            SetSupportActionBar(toolbar);
+            SupportActionBar.Title = "OthelloHelper";
 
             // Buttons
             btnOpenCamera = FindViewById<Button>(Resource.Id.openCamera);
@@ -83,8 +85,8 @@ namespace OthelloHelper.Droid
                 }
                 ImageProperties.uri = uri;
                 imageView.SetImageURI(uri);
+                btnProcess.Enabled = true;
             }
-            GC.Collect();
         }
 
         private void TakeApicture(object sender, EventArgs e)
@@ -94,6 +96,7 @@ namespace OthelloHelper.Droid
             intent.PutExtra(MediaStore.ExtraOutput, Android.Net.Uri.FromFile(ImageProperties._file));
             StartActivityForResult(intent, 0);
         }
+
         private void PickFromGallery(object sender, EventArgs e)
         {
             var imageIntent = new Intent();
@@ -105,7 +108,11 @@ namespace OthelloHelper.Droid
 
         private void BtnProcessClicked(object sender, EventArgs e)
         {
-            Toast.MakeText(this, "Process started", ToastLength.Short).Show();
+            var image_path = ImageProperties.uri.ToString();
+            Log.Info("MainActivity", $"path : {image_path}");
+            Intent intent = new Intent(this, typeof(ResultActivity));
+            intent.PutExtra("image_path", image_path);
+            StartActivity(intent);
         }
 
         private bool IsThereAnAppToTakePictures()

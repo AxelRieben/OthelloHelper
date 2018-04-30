@@ -18,6 +18,8 @@ namespace OthelloHelper.Droid
     class GridDetector
     {
         //Constants
+        private const string TAG = "GridDetector";
+
         private const int BLUR_SIZE = 5;
         private const int DILATATION_SIZE = 15;
         private const int HSV_SENSITIVITY = 20;
@@ -82,7 +84,7 @@ namespace OthelloHelper.Droid
         /// </summary>
         /// <param name="i"></param>
         /// <param name="j"></param>
-        public void drawBestMove(int i, int j)
+        public void DrawBestMove(int i, int j)
         {
             Imgproc.Circle(initialMat, IJToPoint(i, j), 100, new Scalar(255, 0, 0, 255), 5);
         }
@@ -92,14 +94,15 @@ namespace OthelloHelper.Droid
         /// Apply image processing algorithm to analyse the current situation of the board
         /// </summary>
         /// <param name="imagePath"></param>
-        public void Process(string imagePath)
+        public void Process(Bitmap bitmap)
         {
-            Bitmap bm = BitmapFactory.DecodeResource(Android.App.Application.Context.Resources, Resource.Drawable.test_medium_small);
-            Utils.BitmapToMat(bm, initialMat);
+            //bitmap = BitmapFactory.DecodeResource(Android.App.Application.Context.Resources, Resource.Drawable.test_medium_small);
+            
+            Utils.BitmapToMat(bitmap, initialMat);
 
             if (initialMat.Empty())
             {
-                Log.Info("GridDetector", "Image can't be loaded");
+                Log.Info(TAG, "Image can't be loaded");
                 return;
             }
 
@@ -154,17 +157,17 @@ namespace OthelloHelper.Droid
             Imgproc.Rectangle(initialMat, boundingRect.Tl(), boundingRect.Br(), new Scalar(255, 0, 0, 255), 1, 8, 0);
             ExportBitmap(initialMat, "step_6_bounding_rect.png");
 
-            processBoard();
+            ProcessBoard();
             ExportBitmap(initialMat, "step_8_result.png");
 
-            printLogBoard();
+            PrintLogBoard();
         }
 
 
         /// <summary>
         /// Once the bounding rect of the board is detected, all the boxes can be processed
         /// </summary>
-        private void processBoard()
+        private void ProcessBoard()
         {
             //Get the submat containing only the board
             Mat boardHsv = initialHsv.Submat(boundingRect);
@@ -177,11 +180,11 @@ namespace OthelloHelper.Droid
             Core.ExtractChannel(boardHsv, boardValue, 2);
 
             //Get the mean values of each components
-            double meanBoardHue = getMeanValue(boarHue);
-            double meanBoardSaturation = getMeanValue(boardSaturation);
-            double meanBoardValue = getMeanValue(boardValue);
+            double meanBoardHue = GetMeanValue(boarHue);
+            double meanBoardSaturation = GetMeanValue(boardSaturation);
+            double meanBoardValue = GetMeanValue(boardValue);
 
-            Log.Info("GridDetector", "Mean board hue : " + meanBoardHue + "\nMean board saturation : " + meanBoardSaturation + "\nMean board value : " + meanBoardValue + "\n");
+            Log.Info(TAG, "Mean board hue : " + meanBoardHue + "\nMean board saturation : " + meanBoardSaturation + "\nMean board value : " + meanBoardValue + "\n");
 
             //Size of one rectangle of the grid
             boxSizeX = boundingRect.Width / BOARD_SIZE;
@@ -194,7 +197,7 @@ namespace OthelloHelper.Droid
                 {
                     //Current box
                     OpenCV.Core.Rect currentBox = new OpenCV.Core.Rect(IJToPoint(i, j), new OpenCV.Core.Size(boxSizeX / 2, boxSizeY / 2));
-                    processBox(currentBox, i, j);
+                    ProcessBox(currentBox, i, j);
                 }
             }
 
@@ -223,7 +226,7 @@ namespace OthelloHelper.Droid
         /// <param name="currentBox"></param>
         /// <param name="i"></param>
         /// <param name="j"></param>
-        private void processBox(OpenCV.Core.Rect currentBox, int i, int j)
+        private void ProcessBox(OpenCV.Core.Rect currentBox, int i, int j)
         {
             //Get a rectangular sub area of the gray matrix and calculate the mean value
             Mat boxHsv = initialHsv.Submat(currentBox);
@@ -237,9 +240,9 @@ namespace OthelloHelper.Droid
             Core.ExtractChannel(boxHsv, value, 2);
 
             //Get the mean values of each components
-            double meanBoxHue = getMeanValue(hue);
-            double meanBoxSaturation = getMeanValue(saturation);
-            double meanBoxValue = getMeanValue(value);
+            double meanBoxHue = GetMeanValue(hue);
+            double meanBoxSaturation = GetMeanValue(saturation);
+            double meanBoxValue = GetMeanValue(value);
 
             //Append CSV to make statitistics
             csv.Append("Box IJ :");
@@ -287,7 +290,7 @@ namespace OthelloHelper.Droid
         /// </summary>
         /// <param name="mat"></param>
         /// <returns></returns>
-        private double getMeanValue(Mat mat)
+        private double GetMeanValue(Mat mat)
         {
             MatOfDouble mean = new MatOfDouble();
             MatOfDouble stds = new MatOfDouble();
@@ -317,7 +320,7 @@ namespace OthelloHelper.Droid
         /// <summary>
         /// Print the board in log for debug purposes
         /// </summary>
-        private void printLogBoard()
+        private void PrintLogBoard()
         {
             StringBuilder text = new StringBuilder();
             for (int i = 0; i < BOARD_SIZE; i++)
@@ -329,8 +332,7 @@ namespace OthelloHelper.Droid
                 }
                 text.Append("\n");
             }
-
-            Log.Info("GridDetector", "Board : \n" + text);
+            Log.Info(TAG, "Board : \n" + text);
         }
     }
 }
