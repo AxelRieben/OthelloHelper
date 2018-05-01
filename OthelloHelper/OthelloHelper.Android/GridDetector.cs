@@ -291,14 +291,20 @@ namespace OthelloHelper.Droid
         /// <param name="filename"></param>
         private void ExportBitmap(Mat mat, string filename)
         {
-            ProcessedImage = Bitmap.CreateBitmap(mat.Cols(), mat.Rows(), Bitmap.Config.Argb8888);
-            Utils.MatToBitmap(mat, ProcessedImage);
-            string directoryPath = Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + DIR_PROCESSING;
-            string filePath = System.IO.Path.Combine(directoryPath, filename);
-            Directory.CreateDirectory(directoryPath);
-            FileStream fileStream = new FileStream(filePath, FileMode.Create);
-            ProcessedImage.Compress(Bitmap.CompressFormat.Png, 100, fileStream);
-            fileStream.Close();
+            // Work with bitmap
+            {
+                ProcessedImage = Bitmap.CreateBitmap(mat.Cols(), mat.Rows(), Bitmap.Config.Argb8888);
+                Utils.MatToBitmap(mat, ProcessedImage);
+                string directoryPath = Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + DIR_PROCESSING;
+                string filePath = System.IO.Path.Combine(directoryPath, filename);
+                Directory.CreateDirectory(directoryPath);
+                FileStream fileStream = new FileStream(filePath, FileMode.Create);
+                ProcessedImage.Compress(Bitmap.CompressFormat.Png, 100, fileStream);
+                fileStream.Close();
+            }
+
+            // Release memory
+            GC.Collect();
         }
 
 
