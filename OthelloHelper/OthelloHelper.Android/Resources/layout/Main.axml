@@ -3,74 +3,87 @@
     xmlns:local="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar" />
+  <include
+      android:id="@+id/toolbar"
+      layout="@layout/toolbar" />
+  <ScrollView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_below="@id/toolbar">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/toolbar">
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="0.0dp">
-            <Button
-                android:id="@+id/pickGallery"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_weight=".50"
-                android:textColor="#ffffff"
-                android:text="Pick image from gallery" />
-            <Button
-                android:id="@+id/openCamera"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_weight=".50"
-                android:textColor="#ffffff"
-                android:text="Open camera" />
-        </LinearLayout>
-        <RadioGroup
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/btnGroupPlayerColor">
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_weight=".40"
-                android:text="Player color "
-                android:gravity="center_vertical"
-                android:paddingLeft="10dp"
-                android:textColor="#000"
-                android:textSize="17dp"
-                android:textStyle="bold" />
-            <RadioButton
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_weight=".30"
-                android:checked="true"
-                android:text="White"
-                android:id="@+id/rbtnWhite" />
-            <RadioButton
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_weight=".30"
-                android:text="Black"
-                android:id="@+id/rbtnBlack" />
-        </RadioGroup>
-        <ImageView
-            android:src="@drawable/lena"
-            android:layout_width="fill_parent"
-            android:layout_height="400.0dp"
-            android:id="@+id/imageView"
-            android:adjustViewBounds="true" />
+        android:layout_height="match_parent">
+      <LinearLayout
+          android:orientation="horizontal"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="0.0dp">
+        <Button
+            android:id="@+id/pickGallery"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight=".50"
+            android:text="Pick image from gallery" />
+        <Button
+            android:id="@+id/openCamera"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight=".50"
+            android:text="Open camera" />
+      </LinearLayout>
+      <RadioGroup
+          android:orientation="horizontal"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:id="@+id/btnGroupPlayerColor">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight=".40"
+            android:text="Player color "
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:textColor="#000"
+            android:textSize="17dp"
+            android:textStyle="bold" />
+        <RadioButton
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight=".30"
+            android:checked="true"
+            android:text="White"
+            android:id="@+id/rbtnWhite" />
+        <RadioButton
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight=".30"
+            android:text="Black"
+            android:id="@+id/rbtnBlack" />
+      </RadioGroup>
+      <ImageView
+          android:src="@drawable/lena"
+          android:layout_width="fill_parent"
+          android:layout_height="400dp"
+          android:id="@+id/imageView"
+          android:adjustViewBounds="true" />
+      <LinearLayout
+          android:orientation="horizontal"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/rotate"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight=".30"
+            android:text="Rotate" />
         <Button
             android:id="@+id/process"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#ffffff"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight=".70"
             android:text="Process" />
+      </LinearLayout>
     </LinearLayout>
+  </ScrollView>
 </RelativeLayout>

@@ -3,12 +3,9 @@ using Android.Widget;
 using Android.OS;
 using OpenCV.Android;
 using Android.Util;
-using OthelloHelper.Droid.CameraPreview;
 using Android.Support.V7.App;
 using Toolbar = Android.Support.V7.Widget.Toolbar;
 using Android.Graphics;
-using Java.IO;
-using System.IO;
 using Android.Provider;
 using System.Threading.Tasks;
 using OthelloIA_G3;
@@ -29,6 +26,10 @@ namespace OthelloHelper.Droid
         private string playerColor;
         private GridDetector gridDetector;
 
+        /// <summary>
+        /// Called when this activity is created.
+        /// </summary>
+        /// <param name="bundle"></param>
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -43,6 +44,7 @@ namespace OthelloHelper.Droid
             Log.Info(TAG, $"path : {image_path}");
             isWhite = Intent.Extras.GetBoolean("is_white");
             playerColor = isWhite ? "white" : "black";
+            float rotationAngle = Intent.Extras.GetFloat("rotation_angle");
 
             textResult = FindViewById<TextView>(Resource.Id.textResult);
             textResult.Text = "Player " + playerColor + " should play on cell ...";
@@ -53,6 +55,12 @@ namespace OthelloHelper.Droid
             try
             {
                 bitmap = MediaStore.Images.Media.GetBitmap(ContentResolver, Android.Net.Uri.Parse(image_path));
+                if (rotationAngle != 0f)
+                {
+                    var matrix = new Matrix();
+                    matrix.PostRotate(rotationAngle);
+                    bitmap = Bitmap.CreateBitmap(bitmap, 0, 0, bitmap.Width, bitmap.Height, matrix, true);
+                }
                 Log.Info(TAG, $"Bitmap :  {bitmap}\nByteCount : {bitmap.ByteCount}");
                 imageView.SetImageBitmap(bitmap);
             }
@@ -74,6 +82,11 @@ namespace OthelloHelper.Droid
             }
         }
 
+        /// <summary>
+        /// Called when the OpenCV library has been loaded. 
+        /// Start image and AI processing
+        /// </summary>
+        /// <param name="loaderState"></param>
         public void OnManagerConnected(int loaderState)
         {
             switch (loaderState)
@@ -92,6 +105,9 @@ namespace OthelloHelper.Droid
             //Nothing
         }
 
+        /// <summary>
+        /// Start Image processing in separate thread, with progress dialog.
+        /// </summary>
         public void ProcessAsync()
         {
             // Image processing
@@ -112,6 +128,10 @@ namespace OthelloHelper.Droid
                 })).Start();
         }
 
+        /// <summary>
+        /// Start AI processing in separate thread, with progress dialog.
+        /// </summary>
+        /// <param name="tabBoard"></param>
         void WorkIA(int[,] tabBoard)
         {
             // IA
@@ -132,6 +152,10 @@ namespace OthelloHelper.Droid
                 })).Start();
         }
 
+        /// <summary>
+        /// Async method to get the board in the picture.
+        /// </summary>
+        /// <returns></returns>
         public async Task<int[,]> GridProcess()
         {
             var board = await Task.Run(() =>
@@ -142,7 +166,11 @@ namespace OthelloHelper.Droid
             });
             return board;
         }
-
+        /// <summary>
+        /// Async method to guess the best move to play.
+        /// </summary>
+        /// <param name="tabBoard"></param>
+        /// <returns></returns>
         public async Task<Tuple<int, int>> IAProcess(int[,] tabBoard)
         {
             var bestMove = await Task.Run(() =>
