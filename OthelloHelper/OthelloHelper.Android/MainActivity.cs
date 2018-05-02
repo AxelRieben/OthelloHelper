@@ -21,6 +21,7 @@ namespace OthelloHelper.Droid
         private Button btnOpenCamera;
         private Button btnPickFromGallery;
         private Button btnProcess;
+        private RadioGroup radioGroup;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -38,6 +39,7 @@ namespace OthelloHelper.Droid
             btnPickFromGallery = FindViewById<Button>(Resource.Id.pickGallery);
             btnProcess = FindViewById<Button>(Resource.Id.process);
             btnProcess.Enabled = false;
+            radioGroup = FindViewById<RadioGroup>(Resource.Id.btnGroupPlayerColor);
 
             // Image view
             imageView = FindViewById<ImageView>(Resource.Id.imageView);
@@ -45,6 +47,7 @@ namespace OthelloHelper.Droid
             // Button listner
             btnPickFromGallery.Click += PickFromGallery;
             btnProcess.Click += BtnProcessClicked;
+
             if (IsThereAnAppToTakePictures())
             {
                 CreateDirectoryForPictures();
@@ -109,9 +112,17 @@ namespace OthelloHelper.Droid
         private void BtnProcessClicked(object sender, EventArgs e)
         {
             var image_path = ImageProperties.uri.ToString();
+            bool isWhite = true;
+            switch (radioGroup.CheckedRadioButtonId)
+            {
+                case Resource.Id.rbtnBlack:
+                    isWhite = false;
+                    break;
+            }
             Log.Info("MainActivity", $"path : {image_path}");
             Intent intent = new Intent(this, typeof(ResultActivity));
             intent.PutExtra("image_path", image_path);
+            intent.PutExtra("is_white", isWhite);
             StartActivity(intent);
         }
 

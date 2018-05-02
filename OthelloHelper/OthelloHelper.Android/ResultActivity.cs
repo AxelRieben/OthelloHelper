@@ -10,6 +10,10 @@ using Android.Graphics;
 using Java.IO;
 using System.IO;
 using Android.Provider;
+using System.Threading.Tasks;
+using OthelloIA_G3;
+using System;
+using System.Threading;
 
 namespace OthelloHelper.Droid
 {
@@ -21,6 +25,9 @@ namespace OthelloHelper.Droid
         private ImageView imageView;
         private Bitmap bitmap;
         private const string TAG = "ResultActivity";
+        private bool isWhite;
+        private string playerColor;
+        private GridDetector gridDetector;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -32,17 +39,14 @@ namespace OthelloHelper.Droid
             SetSupportActionBar(toolbar);
             SupportActionBar.Title = "OthelloHelper";
 
-            //FindViewById<Button>(Resource.Id.cameraPreview)
-            //    .Click += (s, e) => StartActivity(typeof(CameraPreviewActivity));
-
-            //Start test image processing
-
             image_path = Intent.Extras.GetString("image_path");
             Log.Info(TAG, $"path : {image_path}");
+            isWhite = Intent.Extras.GetBoolean("is_white");
+            playerColor = isWhite ? "white" : "black";
 
             textResult = FindViewById<TextView>(Resource.Id.textResult);
+            textResult.Text = "Player " + playerColor + " should play on cell ...";
             imageView = FindViewById<ImageView>(Resource.Id.imageView);
-            textResult.Text = $"Image path : {image_path}";
 
             Log.Info(TAG, $"path : {image_path}");
 
@@ -52,11 +56,12 @@ namespace OthelloHelper.Droid
                 Log.Info(TAG, $"Bitmap :  {bitmap}\nByteCount : {bitmap.ByteCount}");
                 imageView.SetImageBitmap(bitmap);
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 Log.Warn(TAG, $"Can't create bitmap");
             }
 
+            // Init OpenCV
             if (!OpenCVLoader.InitDebug())
             {
                 Log.Debug(TAG, "Internal OpenCV library not found. Using OpenCV Manager for initialization");
@@ -67,8 +72,6 @@ namespace OthelloHelper.Droid
                 Log.Debug(TAG, "OpenCV library found inside package. Using it!");
                 OnManagerConnected(LoaderCallbackInterface.Success);
             }
-
-            //Finish test
         }
 
         public void OnManagerConnected(int loaderState)
@@ -77,8 +80,7 @@ namespace OthelloHelper.Droid
             {
                 case LoaderCallbackInterface.Success:
                     Log.Info(TAG, "OpenCV loaded successfully");
-                    GridDetector gridDetector = new GridDetector();
-                    gridDetector.Process(bitmap);
+                    ProcessAsync();
                     break;
                 default:
                     break;
@@ -88,6 +90,67 @@ namespace OthelloHelper.Droid
         public void OnPackageInstall(int p0, IInstallCallbackInterface p1)
         {
             //Nothing
+        }
+
+        public void ProcessAsync()
+        {
+            // Image processing
+            var progressDialogImageProcessing = ProgressDialog.Show(this, "Please wait...", "Processing image (1/2)", true);
+            new Thread(new ThreadStart(
+                async delegate
+                {
+                    Log.Info(TAG, "Creating task");
+                    Task<int[,]> task = GridProcess();
+                    Log.Info(TAG, "Awaiting task");
+                    var tabBoard = await task;
+
+                    RunOnUiThread(() =>
+                    {
+                        progressDialogImageProcessing.Hide();
+                        WorkIA(tabBoard);
+                    });
+                })).Start();
+        }
+
+        void WorkIA(int[,] tabBoard)
+        {
+            // IA
+            var progressDialogIA = ProgressDialog.Show(this, "Please wait...", "Processing IA (2/2)", true);
+            new Thread(new ThreadStart(
+                async delegate
+                {
+                    Log.Info(TAG, "Work IA");
+                    var bestMove = await IAProcess(tabBoard);
+                    var file = gridDetector.DrawBestMove(bestMove.Item1, bestMove.Item2);
+
+                    RunOnUiThread(() =>
+                        {
+                            progressDialogIA.Hide();
+                            textResult.Text = "Player " + playerColor + " should play on cell " + $"({bestMove.Item1 + 1};{bestMove.Item2 + 1})";
+                            imageView.SetImageURI(Android.Net.Uri.Parse(file));
+                        });
+                })).Start();
+        }
+
+        public async Task<int[,]> GridProcess()
+        {
+            var board = await Task.Run(() =>
+            {
+                gridDetector = new GridDetector(bitmap);
+                gridDetector.Process();
+                return gridDetector.Board;
+            });
+            return board;
+        }
+
+        public async Task<Tuple<int, int>> IAProcess(int[,] tabBoard)
+        {
+            var bestMove = await Task.Run(() =>
+            {
+                Board board = new Board(tabBoard);
+                return board.GetNextMove(tabBoard, 4, isWhite);
+            });
+            return bestMove;
         }
     }
 }

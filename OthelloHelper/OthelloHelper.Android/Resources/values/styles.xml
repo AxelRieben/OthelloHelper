@@ -46,6 +46,7 @@
     <item name="windowActionBar">false</item>
     <item name="colorPrimary">#2E7D32</item>
     <item name="colorAccent">#1B5E20</item>
+    <item name="colorButtonNormal">#1B5E20</item>
   </style>
 
   

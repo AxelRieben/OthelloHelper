@@ -11,16 +11,55 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar">
-        <Button
-            android:id="@+id/openCamera"
-            android:layout_width="fill_parent"
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Open camera" />
-        <Button
-            android:id="@+id/pickGallery"
-            android:layout_width="fill_parent"
+            android:layout_marginBottom="0.0dp">
+            <Button
+                android:id="@+id/pickGallery"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight=".50"
+                android:textColor="#ffffff"
+                android:text="Pick image from gallery" />
+            <Button
+                android:id="@+id/openCamera"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight=".50"
+                android:textColor="#ffffff"
+                android:text="Open camera" />
+        </LinearLayout>
+        <RadioGroup
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Pick image from gallery" />
+            android:id="@+id/btnGroupPlayerColor">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight=".40"
+                android:text="Player color "
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:textColor="#000"
+                android:textSize="17dp"
+                android:textStyle="bold" />
+            <RadioButton
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight=".30"
+                android:checked="true"
+                android:text="White"
+                android:id="@+id/rbtnWhite" />
+            <RadioButton
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight=".30"
+                android:text="Black"
+                android:id="@+id/rbtnBlack" />
+        </RadioGroup>
         <ImageView
             android:src="@drawable/lena"
             android:layout_width="fill_parent"
@@ -31,6 +70,7 @@
             android:id="@+id/process"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:textColor="#ffffff"
             android:text="Process" />
     </LinearLayout>
 </RelativeLayout>

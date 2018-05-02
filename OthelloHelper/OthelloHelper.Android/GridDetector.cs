@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Remoting.Contexts;
 using System.Text;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace OthelloHelper.Droid
@@ -35,6 +36,9 @@ namespace OthelloHelper.Droid
 
         private const string DIR_PROCESSING = "/OthelloHelper/";
 
+        // Inputs
+        private Bitmap bitmapSource;
+
         //Attributs
         private Mat initialMat;
         private Mat initialHsv;
@@ -51,8 +55,9 @@ namespace OthelloHelper.Droid
         private StringBuilder csv;
 
 
-        public GridDetector()
+        public GridDetector(Bitmap bitmap)
         {
+            bitmapSource = bitmap;
             initialMat = new Mat();
             initialHsv = new Mat();
             displayMat = new Mat();
@@ -69,21 +74,28 @@ namespace OthelloHelper.Droid
         /// </summary>
         /// <param name="i"></param>
         /// <param name="j"></param>
-        public void DrawBestMove(int i, int j)
+        /// <returns>Path the the file containing exported bitmap</returns>
+        public string DrawBestMove(int i, int j)
         {
-            Imgproc.Circle(initialMat, IJToPoint(i, j), 100, new Scalar(255, 0, 0, 255), 5);
-        }
+            // Adapt circle to mat size
+            var point = IJToPoint(i, j);
+            var offset = boundingRect.Height / 40;
+            point.X += offset;
+            point.Y += offset;
 
+            Imgproc.Circle(initialMat, point, boundingRect.Height / 20, new Scalar(255, 0, 0, 255), offset);
+            return ExportBitmap(initialMat, "final_result.png");
+        }
 
         /// <summary>
         /// Apply image processing algorithm to analyse the current situation of the board
         /// </summary>
         /// <param name="imagePath"></param>
-        public void Process(Bitmap bitmap)
+        public void Process()
         {
             //bitmap = BitmapFactory.DecodeResource(Android.App.Application.Context.Resources, Resource.Drawable.test_medium_small);
 
-            Utils.BitmapToMat(bitmap, initialMat);
+            Utils.BitmapToMat(bitmapSource, initialMat);
 
             if (initialMat.Empty())
             {
@@ -147,7 +159,6 @@ namespace OthelloHelper.Droid
 
             PrintLogBoard();
         }
-
 
         /// <summary>
         /// Once the bounding rect of the board is detected, all the boxes can be processed
@@ -243,8 +254,8 @@ namespace OthelloHelper.Droid
             csv.Append(meanBoxValue);
             csv.Append("\n");
 
-            //Export image for debug
-            ExportBitmap(value, "step_7_box_" + i + "_" + j + ".png");
+            // Export image for debug
+            //ExportBitmap(value, "step_7_box_" + i + "_" + j + ".png");
 
             if (meanBoxSaturation < BOX_SATURATION_THESHOLD)
             {
@@ -289,14 +300,17 @@ namespace OthelloHelper.Droid
         /// </summary>
         /// <param name="mat"></param>
         /// <param name="filename"></param>
-        private void ExportBitmap(Mat mat, string filename)
+        /// <returns>Path the the file containing exported bitmap</returns>
+        private string ExportBitmap(Mat mat, string filename)
         {
+            string filePath;
+
             // Work with bitmap
             {
                 ProcessedImage = Bitmap.CreateBitmap(mat.Cols(), mat.Rows(), Bitmap.Config.Argb8888);
                 Utils.MatToBitmap(mat, ProcessedImage);
                 string directoryPath = Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + DIR_PROCESSING;
-                string filePath = System.IO.Path.Combine(directoryPath, filename);
+                filePath = System.IO.Path.Combine(directoryPath, filename);
                 Directory.CreateDirectory(directoryPath);
                 FileStream fileStream = new FileStream(filePath, FileMode.Create);
                 ProcessedImage.Compress(Bitmap.CompressFormat.Png, 100, fileStream);
@@ -305,6 +319,8 @@ namespace OthelloHelper.Droid
 
             // Release memory
             GC.Collect();
+
+            return filePath;
         }
 
 
