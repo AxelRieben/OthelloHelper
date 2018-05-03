@@ -22,7 +22,8 @@ namespace OthelloHelper.Droid
         private const string TAG = "GridDetector";
 
         private const int BLUR_SIZE = 5;
-        private const int DILATATION_SIZE = 15;
+        private const int DILATATION_SIZE = 30;
+        private const int EROSION_SIZE = 20;
         private const int HSV_SENSITIVITY = 20;
 
         private const int CANNY_THRESHOLD1 = 50;
@@ -42,7 +43,6 @@ namespace OthelloHelper.Droid
         //Attributs
         private Mat initialMat;
         private Mat initialHsv;
-        private Mat displayMat;
         private Bitmap processedImage;
         private int[,] board;
         OpenCV.Core.Rect boundingRect;
@@ -60,7 +60,6 @@ namespace OthelloHelper.Droid
             bitmapSource = bitmap;
             initialMat = new Mat();
             initialHsv = new Mat();
-            displayMat = new Mat();
             csv = new StringBuilder();
             Board = new int[BOARD_SIZE, BOARD_SIZE];
         }
@@ -84,7 +83,7 @@ namespace OthelloHelper.Droid
             point.Y += offset;
 
             Imgproc.Circle(initialMat, point, boundingRect.Height / 20, new Scalar(255, 0, 0, 255), offset);
-            return ExportBitmap(initialMat, "final_result.png");
+            return ExportBitmap(initialMat, "step_9_final_result.png");
         }
 
         /// <summary>
@@ -93,7 +92,7 @@ namespace OthelloHelper.Droid
         /// <param name="imagePath"></param>
         public void Process()
         {
-            //bitmap = BitmapFactory.DecodeResource(Android.App.Application.Context.Resources, Resource.Drawable.test_medium_small);
+            //bitmapSource = BitmapFactory.DecodeResource(Android.App.Application.Context.Resources, Resource.Drawable.test_medium_small);
 
             Utils.BitmapToMat(bitmapSource, initialMat);
 
@@ -102,8 +101,6 @@ namespace OthelloHelper.Droid
                 Log.Info(TAG, "Image can't be loaded");
                 return;
             }
-
-            displayMat = initialMat.Clone();
 
             //Blur image
             Imgproc.GaussianBlur(initialMat, initialMat, new OpenCV.Core.Size(BLUR_SIZE, BLUR_SIZE), 0);
@@ -120,11 +117,16 @@ namespace OthelloHelper.Droid
             //Dilatation
             Mat dilated = new Mat();
             Imgproc.Dilate(green, dilated, Imgproc.GetStructuringElement(Imgproc.MorphRect, new OpenCV.Core.Size(DILATATION_SIZE, DILATATION_SIZE)));
-            ExportBitmap(green, "step_3_dilated.png");
+            ExportBitmap(dilated, "step_3.1_dilated.png");
+
+            //Erosion
+            Mat eroded = new Mat();
+            Imgproc.Erode(dilated, eroded, Imgproc.GetStructuringElement(Imgproc.MorphRect, new OpenCV.Core.Size(EROSION_SIZE, EROSION_SIZE)));
+            ExportBitmap(eroded, "step_3.2_eroded.png");
 
             //Apply adaptative threshold
             Mat gray = new Mat();
-            Imgproc.AdaptiveThreshold(dilated, gray, 255, Imgproc.AdaptiveThreshMeanC, Imgproc.ThreshBinary, 15, 40);
+            Imgproc.AdaptiveThreshold(eroded, gray, 255, Imgproc.AdaptiveThreshMeanC, Imgproc.ThreshBinary, 15, 40);
             ExportBitmap(gray, "step_4_threshold.png");
 
             //Apply canny
@@ -165,23 +167,6 @@ namespace OthelloHelper.Droid
         /// </summary>
         private void ProcessBoard()
         {
-            //Get the submat containing only the board
-            Mat boardHsv = initialHsv.Submat(boundingRect);
-            Mat boarHue = new Mat();
-            Mat boardSaturation = new Mat();
-            Mat boardValue = new Mat();
-
-            Core.ExtractChannel(boardHsv, boarHue, 0);
-            Core.ExtractChannel(boardHsv, boardSaturation, 1);
-            Core.ExtractChannel(boardHsv, boardValue, 2);
-
-            //Get the mean values of each components
-            double meanBoardHue = GetMeanValue(boarHue);
-            double meanBoardSaturation = GetMeanValue(boardSaturation);
-            double meanBoardValue = GetMeanValue(boardValue);
-
-            Log.Info(TAG, "Mean board hue : " + meanBoardHue + "\nMean board saturation : " + meanBoardSaturation + "\nMean board value : " + meanBoardValue + "\n");
-
             //Size of one rectangle of the grid
             boxSizeX = boundingRect.Width / BOARD_SIZE;
             boxSizeY = boundingRect.Height / BOARD_SIZE;
@@ -255,7 +240,7 @@ namespace OthelloHelper.Droid
             csv.Append("\n");
 
             // Export image for debug
-            //ExportBitmap(value, "step_7_box_" + i + "_" + j + ".png");
+            ExportBitmap(value, "step_7_box_" + i + "_" + j + ".png");
 
             if (meanBoxSaturation < BOX_SATURATION_THESHOLD)
             {
