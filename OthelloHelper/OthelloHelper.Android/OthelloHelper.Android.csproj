@@ -45,6 +45,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\OpenCV.dll</HintPath>
     </Reference>
+    <Reference Include="OthelloIACastellaRieben">
+      <HintPath>..\Lib\OthelloIACastellaRieben.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -105,10 +108,6 @@
     <ProjectReference Include="..\OthelloHelper\OthelloHelper.csproj">
       <Project>{7ADFA1FD-314B-4DD2-BBB1-234C3E0AEE53}</Project>
       <Name>OthelloHelper</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OthelloIA_G3\OthelloIA_G3.csproj">
-      <Project>{90c344fa-02b9-4077-9f02-0cb7f6748d54}</Project>
-      <Name>OthelloIA_G3</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

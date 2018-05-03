@@ -9,7 +9,7 @@ using AlertDialog = Android.Support.V7.App.AlertDialog;
 using Android.Graphics;
 using Android.Provider;
 using System.Threading.Tasks;
-using OthelloIA_G3;
+using OthelloIACastellaRieben;
 using System;
 using System.Threading;
 
@@ -143,7 +143,7 @@ namespace OthelloHelper.Droid
                     Log.Info(TAG, "Work IA");
                     var bestMove = await IAProcessAsync(tabBoard);
                     string file = null;
-                    if (bestMove.Item1 == -1 && bestMove.Item2 == -1)
+                    if (bestMove.Item1 != -1 && bestMove.Item2 != -1)
                     {
                         file = gridDetector.DrawBestMove(bestMove.Item1, bestMove.Item2);
                     }
@@ -186,6 +186,7 @@ namespace OthelloHelper.Droid
             });
             return board;
         }
+
         /// <summary>
         /// Async method to guess the best move to play.
         /// </summary>
