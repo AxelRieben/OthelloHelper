@@ -11,6 +11,8 @@ using Android.Util;
 using Android.Support.V7.App;
 using Toolbar = Android.Support.V7.Widget.Toolbar;
 using Android.Graphics;
+using System.Threading.Tasks;
+using System.Threading;
 
 // Source :  https://github.com/xamarin/recipes/tree/master/Recipes/android/other_ux/camera_intent/take_a_picture_and_save_using_camera_app
 namespace OthelloHelper.Droid
@@ -144,15 +146,25 @@ namespace OthelloHelper.Droid
         /// <param name="e"></param>
         private void Rotate(object sender, EventArgs e)
         {
-            rotationAngle = (rotationAngle + 90) % 360;
-            if (ImageProperties.uri != null)
-            {
-                var bitmap = MediaStore.Images.Media.GetBitmap(ContentResolver, ImageProperties.uri);
-                var matrix = new Matrix();
-                matrix.PostRotate(rotationAngle);
-                imageView.SetImageBitmap(Bitmap.CreateBitmap(bitmap, 0, 0, bitmap.Width, bitmap.Height, matrix, true));
-            }
-            GC.Collect();
+            var progressDialogRotatte = ProgressDialog.Show(this, "Please wait...", "Rotating image...", true);
+            new Thread(new ThreadStart(
+                delegate
+                {
+                    rotationAngle = (rotationAngle + 90) % 360;
+                    if (ImageProperties.uri != null)
+                    {
+                        var bitmap = MediaStore.Images.Media.GetBitmap(ContentResolver, ImageProperties.uri);
+                        var matrix = new Matrix();
+                        matrix.PostRotate(rotationAngle);
+                        var newBitmap = Bitmap.CreateBitmap(bitmap, 0, 0, bitmap.Width, bitmap.Height, matrix, true);
+                        RunOnUiThread(() =>
+                        {
+                            progressDialogRotatte.Hide();
+                            imageView.SetImageBitmap(newBitmap);
+                        });
+                    }
+                    GC.Collect();
+                })).Start();
         }
 
         /// <summary>

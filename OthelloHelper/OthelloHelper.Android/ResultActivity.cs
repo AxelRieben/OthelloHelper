@@ -5,6 +5,7 @@ using OpenCV.Android;
 using Android.Util;
 using Android.Support.V7.App;
 using Toolbar = Android.Support.V7.Widget.Toolbar;
+using AlertDialog = Android.Support.V7.App.AlertDialog;
 using Android.Graphics;
 using Android.Provider;
 using System.Threading.Tasks;
@@ -116,7 +117,7 @@ namespace OthelloHelper.Droid
                 async delegate
                 {
                     Log.Info(TAG, "Creating task");
-                    Task<int[,]> task = GridProcess();
+                    Task<int[,]> task = GridProcessAsync();
                     Log.Info(TAG, "Awaiting task");
                     var tabBoard = await task;
 
@@ -140,23 +141,42 @@ namespace OthelloHelper.Droid
                 async delegate
                 {
                     Log.Info(TAG, "Work IA");
-                    var bestMove = await IAProcess(tabBoard);
-                    var file = gridDetector.DrawBestMove(bestMove.Item1, bestMove.Item2);
+                    var bestMove = await IAProcessAsync(tabBoard);
+                    string file = null;
+                    if (bestMove.Item1 == -1 && bestMove.Item2 == -1)
+                    {
+                        file = gridDetector.DrawBestMove(bestMove.Item1, bestMove.Item2);
+                    }
 
                     RunOnUiThread(() =>
                         {
                             progressDialogIA.Hide();
-                            textResult.Text = "Player " + playerColor + " should play on cell " + $"({bestMove.Item1 + 1};{bestMove.Item2 + 1})";
-                            imageView.SetImageURI(Android.Net.Uri.Parse(file));
+                            if (file != null)
+                            {
+                                textResult.Text = "Player " + playerColor + " should play on cell " + $"({bestMove.Item1 + 1};{bestMove.Item2 + 1})";
+                                imageView.SetImageURI(Android.Net.Uri.Parse(file));
+                            }
+                            else
+                            {
+                                ShowErrorDialog();
+                            }
                         });
                 })).Start();
+        }
+
+        private void ShowErrorDialog()
+        {
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            alert.SetTitle("Error");
+            alert.SetMessage("Application cannot find a playable move.");
+            alert.SetNeutralButton("Ok", delegate { return; });
         }
 
         /// <summary>
         /// Async method to get the board in the picture.
         /// </summary>
         /// <returns></returns>
-        public async Task<int[,]> GridProcess()
+        public async Task<int[,]> GridProcessAsync()
         {
             var board = await Task.Run(() =>
             {
@@ -171,7 +191,7 @@ namespace OthelloHelper.Droid
         /// </summary>
         /// <param name="tabBoard"></param>
         /// <returns></returns>
-        public async Task<Tuple<int, int>> IAProcess(int[,] tabBoard)
+        public async Task<Tuple<int, int>> IAProcessAsync(int[,] tabBoard)
         {
             var bestMove = await Task.Run(() =>
             {
