@@ -1,24 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 using Android.App;
-using Android.Content;
 using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
 using Android.Util;
 using Android.Views;
-using Android.Widget;
 using OpenCV.Android;
 using OpenCV.Core;
 using OpenCV.ImgProc;
-using OthelloIA_G3;
 
 namespace OthelloHelper.Droid.CameraPreview
 {
-    
+
     [Activity(Label = CameraPreview,
         ScreenOrientation = ScreenOrientation.Landscape,
         ConfigurationChanges = ConfigChanges.KeyboardHidden | ConfigChanges.Orientation

@@ -40,6 +40,9 @@
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="IPlayable">
+      <HintPath>..\..\..\..\C#\GitOthelloGame\OthelloGame\OthelloDLL\IPlayable.dll</HintPath>
+    </Reference>
     <Reference Include="Mono.Android" />
     <Reference Include="OpenCV, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

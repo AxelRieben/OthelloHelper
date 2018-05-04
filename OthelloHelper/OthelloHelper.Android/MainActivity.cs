@@ -11,7 +11,6 @@ using Android.Util;
 using Android.Support.V7.App;
 using Toolbar = Android.Support.V7.Widget.Toolbar;
 using Android.Graphics;
-using System.Threading.Tasks;
 using System.Threading;
 
 // Source :  https://github.com/xamarin/recipes/tree/master/Recipes/android/other_ux/camera_intent/take_a_picture_and_save_using_camera_app

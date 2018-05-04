@@ -12,10 +12,11 @@ using System.Threading.Tasks;
 using OthelloIACastellaRieben;
 using System;
 using System.Threading;
+using Android.Content.PM;
 
 namespace OthelloHelper.Droid
 {
-    [Activity(Label = "OthelloHelper", Icon = "@drawable/icon", Theme = "@style/OthelloTheme", MainLauncher = false)]
+    [Activity(Label = "OthelloHelper", Icon = "@drawable/icon", Theme = "@style/OthelloTheme", MainLauncher = false, ScreenOrientation = ScreenOrientation.Portrait)]
     public class ResultActivity : AppCompatActivity, ILoaderCallbackInterface
     {
         private string image_path;
