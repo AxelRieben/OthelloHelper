@@ -108,6 +108,7 @@ namespace OthelloHelper.Droid
                 imageView.SetImageURI(uri);
                 btnProcess.Enabled = true;
                 btnRotate.Enabled = true;
+                rotationAngle = 0;
             }
         }
 

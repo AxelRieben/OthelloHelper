@@ -247,13 +247,13 @@ namespace OthelloHelper.Droid
                 if (meanBoxValue > BOX_VALUE_THESHOLD)
                 {
                     //It's a white coin
-                    Board[j, i] = 0;
+                    Board[i, j] = 0;
                     Imgproc.Rectangle(initialMat, currentBox.Tl(), currentBox.Br(), new Scalar(255, 255, 255, 255), 2, 8, 0);
                 }
                 else
                 {
                     //It's a black coin
-                    Board[j, i] = 1;
+                    Board[i, j] = 1;
                     Imgproc.Rectangle(initialMat, currentBox.Tl(), currentBox.Br(), new Scalar(0, 0, 0, 255), 2, 8, 0);
                 }
             }

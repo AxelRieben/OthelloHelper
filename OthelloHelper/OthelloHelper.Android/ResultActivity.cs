@@ -19,6 +19,8 @@ namespace OthelloHelper.Droid
     [Activity(Label = "OthelloHelper", Icon = "@drawable/icon", Theme = "@style/OthelloTheme", MainLauncher = false, ScreenOrientation = ScreenOrientation.Portrait)]
     public class ResultActivity : AppCompatActivity, ILoaderCallbackInterface
     {
+        private const int IMAGE_SIZE = 400;
+
         private string image_path;
         private TextView textResult;
         private ImageView imageView;
@@ -56,14 +58,33 @@ namespace OthelloHelper.Droid
 
             try
             {
+                // Get bitmap
                 bitmap = MediaStore.Images.Media.GetBitmap(ContentResolver, Android.Net.Uri.Parse(image_path));
+
+                // Resize if bitmap bigger than image size
+                if (bitmap.Width > IMAGE_SIZE || bitmap.Height > IMAGE_SIZE)
+                {
+                    bool widthBigger = bitmap.Width > bitmap.Height;
+                    float ratio = widthBigger ? bitmap.Width / (float)bitmap.Height : bitmap.Height / (float)bitmap.Width;
+                    Log.Info(TAG, $"Size w*h: {bitmap.Width } * {bitmap.Height}. Ratio : {ratio}");
+                    if (widthBigger)
+                    {
+                        bitmap = Bitmap.CreateScaledBitmap(bitmap, (int)(IMAGE_SIZE * ratio), IMAGE_SIZE, false);
+                    }
+                    else
+                    {
+                        bitmap = Bitmap.CreateScaledBitmap(bitmap, IMAGE_SIZE, (int)(IMAGE_SIZE * ratio), false);
+                    }
+                }
+
+                // Rotate if angle is different than 0
                 if (rotationAngle != 0f)
                 {
                     var matrix = new Matrix();
                     matrix.PostRotate(rotationAngle);
                     bitmap = Bitmap.CreateBitmap(bitmap, 0, 0, bitmap.Width, bitmap.Height, matrix, true);
                 }
-                Log.Info(TAG, $"Bitmap :  {bitmap}\nByteCount : {bitmap.ByteCount}");
+                Log.Info(TAG, $"Bitmap :  {bitmap}. ByteCount : {bitmap.ByteCount}");
                 imageView.SetImageBitmap(bitmap);
             }
             catch (Exception)
@@ -170,7 +191,8 @@ namespace OthelloHelper.Droid
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
             alert.SetTitle("Error");
             alert.SetMessage("Application cannot find a playable move.");
-            alert.SetNeutralButton("Ok", delegate { return; });
+            alert.SetNeutralButton("Go back", delegate { base.OnBackPressed(); });
+            alert.Show();
         }
 
         /// <summary>
@@ -204,4 +226,3 @@ namespace OthelloHelper.Droid
         }
     }
 }
-
