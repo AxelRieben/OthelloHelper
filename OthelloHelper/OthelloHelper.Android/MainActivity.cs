@@ -19,12 +19,18 @@ namespace OthelloHelper.Droid
     [Activity(Label = "OthelloHelper", Icon = "@drawable/icon", Theme = "@style/OthelloTheme", MainLauncher = true)]
     public class MainActivity : AppCompatActivity
     {
+        // Constants
+        private string TAG = "MainActivity";
+
+        // Views
         private ImageView imageView;
         private Button btnOpenCamera;
         private Button btnRotate;
         private Button btnPickFromGallery;
         private Button btnProcess;
         private RadioGroup radioGroup;
+
+        // Tools / outputs
         private float rotationAngle = 0f;
 
         /// <summary>
@@ -34,7 +40,6 @@ namespace OthelloHelper.Droid
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-
             SetContentView(Resource.Layout.Main);
 
             // Toolbar
@@ -45,11 +50,11 @@ namespace OthelloHelper.Droid
             // Buttons
             btnOpenCamera = FindViewById<Button>(Resource.Id.openCamera);
             btnRotate = FindViewById<Button>(Resource.Id.rotate);
-            btnRotate.Enabled = false;
             btnPickFromGallery = FindViewById<Button>(Resource.Id.pickGallery);
             btnProcess = FindViewById<Button>(Resource.Id.process);
-            btnProcess.Enabled = false;
             radioGroup = FindViewById<RadioGroup>(Resource.Id.btnGroupPlayerColor);
+            btnRotate.Enabled = false; // Disable until an image is loaded
+            btnProcess.Enabled = false; // Disable until an image is loaded
 
             // Image view
             imageView = FindViewById<ImageView>(Resource.Id.imageView);
@@ -68,7 +73,7 @@ namespace OthelloHelper.Droid
             // Image view content
             if (ImageProperties.uri != null)
             {
-                Log.Info("OnCreate", $"Restore image from uri {ImageProperties.uri.Path}");
+                Log.Info(TAG, $"Restore image from uri {ImageProperties.uri.Path}");
                 try
                 {
                     imageView.SetImageURI(ImageProperties.uri);
@@ -77,10 +82,9 @@ namespace OthelloHelper.Droid
                 }
                 catch (Exception e)
                 {
-                    Log.Info("OnCreate", $"Exception on set image uri onCreate: {e}");
+                    Log.Info(TAG, $"Exception on set image uri onCreate: {e}");
                 }
             }
-            GC.Collect();
         }
 
         /// <summary>
@@ -92,23 +96,27 @@ namespace OthelloHelper.Droid
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
-            Android.Net.Uri uri;
+
             if (resultCode == Result.Ok)
             {
+                Android.Net.Uri uri = null;
                 if (ImageProperties._file != null)
                 {
+                    // User took a new picture
                     uri = Android.Net.Uri.FromFile(ImageProperties._file);
                     ImageProperties._file = null;
                 }
                 else
                 {
+                    // User choosed an existing picture
                     uri = data.Data;
                 }
+                Log.Info(TAG, $"Loading new image from {uri.Path}");
                 ImageProperties.uri = uri;
                 imageView.SetImageURI(uri);
                 btnProcess.Enabled = true;
                 btnRotate.Enabled = true;
-                rotationAngle = 0;
+                rotationAngle = 0.0f;
             }
         }
 
@@ -119,6 +127,7 @@ namespace OthelloHelper.Droid
         /// <param name="e"></param>
         private void TakeApicture(object sender, EventArgs e)
         {
+            Log.Info(TAG, $"Taking new picture");
             Intent intent = new Intent(MediaStore.ActionImageCapture);
             ImageProperties._file = new Java.IO.File(ImageProperties._dir, String.Format("othello_{0}.jpg", Guid.NewGuid()));
             intent.PutExtra(MediaStore.ExtraOutput, Android.Net.Uri.FromFile(ImageProperties._file));
@@ -132,6 +141,7 @@ namespace OthelloHelper.Droid
         /// <param name="e"></param>
         private void PickFromGallery(object sender, EventArgs e)
         {
+            Log.Info(TAG, $"Picking image from gallery");
             var imageIntent = new Intent();
             imageIntent.SetType("image/*");
             imageIntent.SetAction(Intent.ActionGetContent);

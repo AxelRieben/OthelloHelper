@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="com.companyname.OthelloHelper" android:installLocation="auto">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="ch.hearc.OthelloHelper" android:installLocation="auto">
 	<uses-sdk android:minSdkVersion="21" />
-	<application android:label="OthelloHelper.Android" android:theme="@style/OthelloTheme"></application>
+	<application android:label="OthelloHelper.Android" android:theme="@style/OthelloTheme" android:icon="@drawable/icon"></application>
 	<uses-permission android:name="android.permission.CAMERA" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 	<uses-feature android:name="android.hardware.camera" android:required="false" />

@@ -19,15 +19,21 @@ namespace OthelloHelper.Droid
     [Activity(Label = "OthelloHelper", Icon = "@drawable/icon", Theme = "@style/OthelloTheme", MainLauncher = false, ScreenOrientation = ScreenOrientation.Portrait)]
     public class ResultActivity : AppCompatActivity, ILoaderCallbackInterface
     {
-        private const int IMAGE_SIZE = 400;
-
-        private string image_path;
-        private TextView textResult;
-        private ImageView imageView;
-        private Bitmap bitmap;
+        // Constants
         private const string TAG = "ResultActivity";
+        private const int IMAGE_SIZE = 500;
+
+        // Inputs
+        private string image_path;
         private bool isWhite;
         private string playerColor;
+
+        // Views
+        private TextView textResult;
+        private ImageView imageView;
+
+        // Tools
+        private Bitmap bitmap;
         private GridDetector gridDetector;
 
         /// <summary>
@@ -44,38 +50,23 @@ namespace OthelloHelper.Droid
             SetSupportActionBar(toolbar);
             SupportActionBar.Title = "OthelloHelper";
 
+            // Inputs
             image_path = Intent.Extras.GetString("image_path");
-            Log.Info(TAG, $"path : {image_path}");
+            Log.Info(TAG, $"Path : {image_path}");
             isWhite = Intent.Extras.GetBoolean("is_white");
             playerColor = isWhite ? "white" : "black";
             float rotationAngle = Intent.Extras.GetFloat("rotation_angle");
 
+            // Views
             textResult = FindViewById<TextView>(Resource.Id.textResult);
             textResult.Text = "Player " + playerColor + " should play on cell ...";
             imageView = FindViewById<ImageView>(Resource.Id.imageView);
-
-            Log.Info(TAG, $"path : {image_path}");
 
             try
             {
                 // Get bitmap
                 bitmap = MediaStore.Images.Media.GetBitmap(ContentResolver, Android.Net.Uri.Parse(image_path));
-
-                // Resize if bitmap bigger than image size
-                if (bitmap.Width > IMAGE_SIZE || bitmap.Height > IMAGE_SIZE)
-                {
-                    bool widthBigger = bitmap.Width > bitmap.Height;
-                    float ratio = widthBigger ? bitmap.Width / (float)bitmap.Height : bitmap.Height / (float)bitmap.Width;
-                    Log.Info(TAG, $"Size w*h: {bitmap.Width } * {bitmap.Height}. Ratio : {ratio}");
-                    if (widthBigger)
-                    {
-                        bitmap = Bitmap.CreateScaledBitmap(bitmap, (int)(IMAGE_SIZE * ratio), IMAGE_SIZE, false);
-                    }
-                    else
-                    {
-                        bitmap = Bitmap.CreateScaledBitmap(bitmap, IMAGE_SIZE, (int)(IMAGE_SIZE * ratio), false);
-                    }
-                }
+                bitmap = ResizeBitmap(bitmap);
 
                 // Rotate if angle is different than 0
                 if (rotationAngle != 0f)
@@ -84,10 +75,10 @@ namespace OthelloHelper.Droid
                     matrix.PostRotate(rotationAngle);
                     bitmap = Bitmap.CreateBitmap(bitmap, 0, 0, bitmap.Width, bitmap.Height, matrix, true);
                 }
-                Log.Info(TAG, $"Bitmap :  {bitmap}. ByteCount : {bitmap.ByteCount}");
+                Log.Info(TAG, $"Bitmap : {bitmap}. ByteCount : {bitmap.ByteCount}");
                 imageView.SetImageBitmap(bitmap);
             }
-            catch (Exception)
+            catch
             {
                 Log.Warn(TAG, $"Can't create bitmap");
             }
@@ -106,8 +97,33 @@ namespace OthelloHelper.Droid
         }
 
         /// <summary>
+        /// Resize and return given bitmap using IMAGE_SIZE.
+        /// </summary>
+        /// <param name="bitmap"></param>
+        /// <returns></returns>
+        private Bitmap ResizeBitmap(Bitmap bitmap)
+        {
+            // Resize if bitmap is bigger than IMAGE_SIZE
+            if (bitmap.Width > IMAGE_SIZE || bitmap.Height > IMAGE_SIZE)
+            {
+                bool widthBigger = bitmap.Width > bitmap.Height;
+                float ratio = widthBigger ? bitmap.Width / (float)bitmap.Height : bitmap.Height / (float)bitmap.Width;
+                Log.Info(TAG, $"Size w*h: {bitmap.Width } * {bitmap.Height}. Ratio : {ratio}");
+                if (widthBigger)
+                {
+                    bitmap = Bitmap.CreateScaledBitmap(bitmap, (int)(IMAGE_SIZE * ratio), IMAGE_SIZE, false);
+                }
+                else
+                {
+                    bitmap = Bitmap.CreateScaledBitmap(bitmap, IMAGE_SIZE, (int)(IMAGE_SIZE * ratio), false);
+                }
+            }
+            return bitmap;
+        }
+
+        /// <summary>
         /// Called when the OpenCV library has been loaded. 
-        /// Start image and AI processing
+        /// Start image and AI processing.
         /// </summary>
         /// <param name="loaderState"></param>
         public void OnManagerConnected(int loaderState)
@@ -116,7 +132,7 @@ namespace OthelloHelper.Droid
             {
                 case LoaderCallbackInterface.Success:
                     Log.Info(TAG, "OpenCV loaded successfully");
-                    ProcessAsync();
+                    ProcessRecognition();
                     break;
                 default:
                     break;
@@ -125,22 +141,21 @@ namespace OthelloHelper.Droid
 
         public void OnPackageInstall(int p0, IInstallCallbackInterface p1)
         {
-            //Nothing
+            // Nothing
         }
 
         /// <summary>
         /// Start Image processing in separate thread, with progress dialog.
         /// </summary>
-        public void ProcessAsync()
+        public void ProcessRecognition()
         {
             // Image processing
             var progressDialogImageProcessing = ProgressDialog.Show(this, "Please wait...", "Processing image (1/2)", true);
             new Thread(new ThreadStart(
                 async delegate
                 {
-                    Log.Info(TAG, "Creating task");
+                    Log.Info(TAG, "Starting image recognition");
                     Task<int[,]> task = GridProcessAsync();
-                    Log.Info(TAG, "Awaiting task");
                     var tabBoard = await task;
 
                     RunOnUiThread(() =>
@@ -154,7 +169,7 @@ namespace OthelloHelper.Droid
         /// <summary>
         /// Start AI processing in separate thread, with progress dialog.
         /// </summary>
-        /// <param name="tabBoard"></param>
+        /// <param name="tabBoard">The int[8,8] tab containing game state.</param>
         void WorkIA(int[,] tabBoard)
         {
             // IA
@@ -162,7 +177,7 @@ namespace OthelloHelper.Droid
             new Thread(new ThreadStart(
                 async delegate
                 {
-                    Log.Info(TAG, "Work IA");
+                    Log.Info(TAG, "Starting IA process");
                     var bestMove = await IAProcessAsync(tabBoard);
                     string file = null;
                     if (bestMove.Item1 != -1 && bestMove.Item2 != -1)
@@ -186,19 +201,10 @@ namespace OthelloHelper.Droid
                 })).Start();
         }
 
-        private void ShowErrorDialog()
-        {
-            AlertDialog.Builder alert = new AlertDialog.Builder(this);
-            alert.SetTitle("Error");
-            alert.SetMessage("Application cannot find a playable move.");
-            alert.SetNeutralButton("Go back", delegate { base.OnBackPressed(); });
-            alert.Show();
-        }
-
         /// <summary>
         /// Async method to get the board in the picture.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>int[8,8] tab containing game state.</returns>
         public async Task<int[,]> GridProcessAsync()
         {
             var board = await Task.Run(() =>
@@ -213,7 +219,7 @@ namespace OthelloHelper.Droid
         /// <summary>
         /// Async method to guess the best move to play.
         /// </summary>
-        /// <param name="tabBoard"></param>
+        /// <param name="tabBoard">The int[8,8] tab containing game state.</param>
         /// <returns></returns>
         public async Task<Tuple<int, int>> IAProcessAsync(int[,] tabBoard)
         {
@@ -223,6 +229,18 @@ namespace OthelloHelper.Droid
                 return board.GetNextMove(tabBoard, 4, isWhite);
             });
             return bestMove;
+        }
+
+        /// <summary>
+        /// Display an error dialog saying IA cannot find a playable move.
+        /// </summary>
+        private void ShowErrorDialog()
+        {
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            alert.SetTitle("Error");
+            alert.SetMessage("Application cannot find a playable move.");
+            alert.SetNeutralButton("Go back", delegate { base.OnBackPressed(); });
+            alert.Show();
         }
     }
 }
